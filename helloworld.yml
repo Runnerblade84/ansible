@@ -1,8 +1,10 @@
 ---
-- name: Hello World!
+- name: Update and Upgrade Apt
   hosts: all
  
   tasks:
- 
-  - name: Hello World!
-    shell: echo "Hi! Tower is working."
+  
+   - name: Upgrade all packages to the latest version
+    apt:
+     name: "*"
+     state: latest
