@@ -1,6 +1,5 @@
 ---
-- name: Update and upgrade apt packages
-  become: true
+- name: Upgrade all packages to the latest version
   apt:
-    upgrade: yes
-    update_cache: yes
+    name: "*"
+    state: latest
