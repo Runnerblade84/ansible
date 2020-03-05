@@ -14,12 +14,6 @@
     
   - name: Autoremove unused packages
     become: true
-    command: apt-get -y autoremove
-    register: apt_result
-    changed_when: "'packages will be REMOVED' in apt_result.stdout"
-
-  - name: Purge residual kernel packages
-    become: true
-    shell: apt-get remove -y --purge $(dpkg -l | grep "^rc\s*linux-image-" | awk '{print $2}' | tr '\n' ' ')
+    command: apt -y autoremove
     register: apt_result
     changed_when: "'packages will be REMOVED' in apt_result.stdout"
