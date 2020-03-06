@@ -11,7 +11,7 @@
     apt: name={{ item }} state=latest
     with_items:
       - qemu-guest-agent
-      - pythonn3
+      - htop
     tags:
       - packages
 
