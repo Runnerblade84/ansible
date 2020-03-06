@@ -7,12 +7,12 @@
     become: true
     apt: update_cache=yes cache_valid_time=600
     
-- name: Install base packages
-  apt: name={{ item }} state=installed
-  with_items:
-    - qemu-guest-agent
-  tags:
-    - packages
+  - name: Install base packages
+    apt: name={{ item }} state=installed
+    with_items:
+      - qemu-guest-agent
+    tags:
+      - packages
 
   - name: Upgrade APT to the latest packages
     become: true
