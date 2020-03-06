@@ -9,10 +9,7 @@
     
   - name: Install base packages
     become: true
-    apt: name={{ item }} state=latest
-    with_items:
-      - qemu-guest-agent
-      - htop
+    apt: name=['qemu-guest-agent','htop'] state=latest
     tags:
       - packages
 
