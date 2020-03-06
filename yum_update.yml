@@ -1,0 +1,25 @@
+---
+- hosts: all
+  
+  tasks:
+
+  - name: Update APT package cache
+    become: true
+    apt: update_cache=yes cache_valid_time=600
+    
+  - name: Install base packages
+    become: true
+    apt: name=['qemu-guest-agent','htop'] state=latest
+    tags:
+      - packages
+
+  - name: Upgrade APT to the latest packages
+    become: true
+    apt: upgrade=dist
+    register: apt_result
+    
+  - name: Autoremove unused packages
+    become: true
+    command: apt -y autoremove
+    register: apt_result
+    changed_when: "'packages will be REMOVED' in apt_result.stdout"
