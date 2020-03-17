@@ -9,7 +9,7 @@
     
   - name: Install base packages
     become: true
-    apt: name=['qemu-guest-agent','htop'] state=latest
+    apt: name=['htop'] state=latest
     tags:
       - packages
 
