@@ -7,12 +7,6 @@
     become: true
     apt: update_cache=yes cache_valid_time=600
     
-  - name: Install base packages
-    become: true
-    apt: name=['htop'] state=latest
-    tags:
-      - packages
-
   - name: Upgrade APT to the latest packages
     become: true
     apt: upgrade=dist
