@@ -1,0 +1,44 @@
+---
+
+# playbooks/init.yml
+#
+# This playbook prepares a host to be managed by ansible using the root
+# account. You should run it just after new server has been installed and
+# connected to the network. Make sure that you can access the root account
+# through ssh. You might have to provide a password (in that case use '-k'
+# switch on the command line to prompt for the password).
+#
+# Usage:
+# ansible-playbook -k playbooks/init.yml -l "<hostname>"
+#
+
+- hosts: all
+  remote_user: root
+  gather_facts: False
+  tags: init
+
+  tasks:
+  - name: INIT | Install python support for Ansible
+    raw: apt-get -yq install python python-apt
+    tags: init
+
+  - action: setup
+    tags: init
+
+  - name: INIT | Make sure essential software is installed
+    apt:
+      name: '{{ item }}'
+      state: 'latest'
+      install_recommends: False
+    with_items:
+      - python
+      - python-apt
+      - lsb-release
+    tags: init
+
+  - name: INIT | Install ssh public key from current account
+    authorized_key:
+      user: root
+      key:  '{{ lookup("file", "~/.ssh/id_rsa.pub") }}'
+      state: 'present'
+    tags: init
