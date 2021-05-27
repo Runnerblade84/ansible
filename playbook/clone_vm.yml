@@ -1,0 +1,20 @@
+---
+- name: clone vm template
+  hosts: ansible
+  vars:
+    ansible_python_interpreter: "/usr/bin/python3"
+  tasks:
+    - community.general.proxmox_kvm:
+        api_user: root@pam
+        api_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          66383662363438383432333038636361383539333135316565363935396135643362306662373530
+          3236323539383061636139306665396331613032326261380a396563303265373534323133353466
+          39303737376130626463303137356164306664383362643063333833376232616564353938303237
+          3433326336353539380a656130376333366564636565636364663537376139303830366137643931
+          3630
+        api_host: skynet
+        name: ipaserver
+        clone: Ubuntu20
+        node: skynet
+        storage: ds_ceph

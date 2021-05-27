@@ -1,0 +1,10 @@
+- hosts: localhost
+  tasks:
+  - name: Get Version
+    shell: grep zabbix '/etc/ansible/hosts'
+    register: results
+  - set_fact:
+      string_to_echo: "{{ results.stdout | regex_search('([0-9]{1,3}\\.){3}[0-9]{1,3}') }}"
+  - name: Scrivi ip in /tmp/ip.txt
+    copy: content="{{ string_to_echo }}"  dest=/tmp/ip
+

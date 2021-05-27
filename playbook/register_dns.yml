@@ -1,0 +1,15 @@
+---
+ - name: Update pihole
+   vars_prompt:
+      - name: host_name
+        prompt: hostname da aggiungere
+        private: no
+      - name: ip_address
+        prompt: IP Address
+        private: no
+   become: true
+   hosts: pihole
+   roles:
+    - role: deppo.pihole
+      ip: '{{ ip_address }}'
+      hostname: '{{ host_name }}'

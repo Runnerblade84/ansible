@@ -1,0 +1,32 @@
+---
+- name: Add ip on /etc/hosts  
+  hosts: localhost
+  vars_prompt:
+  - name: host_name
+    prompt: Hostname
+    private: no
+  tasks:
+  - name: Get IP address from /etc/ansible/hosts
+    command: grep {{ host_name }} /etc/ansible/hosts
+    register: results
+  - set_fact:
+      ip_address: "{{ results.stdout | regex_search('([0-9]{1,3}\\.){3}[0-9]{1,3}') }}"
+
+- name: Do baseline config
+  hosts: hostvars['localhost']['host_name']
+  become: yes
+  become_method: sudo
+  roles:
+     - role: lucascbeyeler.baseline
+       hostname: hostvars['localhost']['host_name']
+       domain: depax.lan
+       timezone: Europe/Rome
+       enable_hushlogin:
+       ssh_port: 22
+
+- name: Update pihole
+  become: true
+  hosts: pihole
+  roles:
+   - role: deppo.pihole
+     ip: hostvars['localhost']['ip_address']
